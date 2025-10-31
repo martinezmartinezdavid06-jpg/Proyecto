@@ -1,1 +1,143 @@
-# Proyecto
+import random
+def MD_edad():
+    """Pide la edad al usuario y la muestra en pantalla."""
+    MD_edad_usuario = int(input("Ingresa tu edad: "))
+    print(f"Tu edad es: {MD_edad_usuario} años")
+
+def MD_suma():
+    """Pide dos números al usuario y muestra su suma."""
+    MD_num1 = float(input("Ingresa el primer número: "))
+    MD_num2 = float(input("Ingresa el segundo número: "))
+    MD_resultado = MD_num1 + MD_num2
+    print(f"La suma de {MD_num1} + {MD_num2} es = {MD_resultado}")
+
+def MD_num_aleatorio():
+    """Genera un número aleatorio y permite al usuario adivinarlo."""
+    MD_numero_secreto = random.randint(1, 100)
+    print("Adivina el número (entre 1 y 100)")
+
+    while True:
+        MD_intento = int(input("Tu intento: "))
+        if MD_intento < MD_numero_secreto:
+            print("El número secreto es mayor.")
+        elif MD_intento > MD_numero_secreto:
+            print("El número secreto es menor.")
+        else:
+            print("🎉 ¡Felicitaciones, adivinaste el número!")
+            break
+
+def MD_contador_vocales():
+    """Cuenta las vocales en una cadena ingresada por el usuario."""
+    MD_texto = input("Ingresa una cadena: ").lower()
+    MD_vocales = "aeiou"
+    MD_total_vocales = sum(1 for c in MD_texto if c in MD_vocales)
+    print(f"La cadena tiene {MD_total_vocales} vocales.")
+
+def MD_palindromo(MD_palabra):
+    """
+    Verifica si una palabra es palíndromo.
+    Un palíndromo se lee igual al derecho y al revés.
+    """
+    MD_palabra = MD_palabra.lower().replace(" ", "")
+    if MD_palabra == MD_palabra[::-1]:
+        print(True)
+    else:
+        print(False)
+
+
+def MD_calcular_potencia(MD_base, MD_exponente):
+    """
+    Calcula la potencia de una base elevada a un exponente
+    y muestra el resultado por pantalla.
+    """
+    MD_resultado = MD_base ** MD_exponente
+    print(f"{MD_base} elevado a la {MD_exponente} es {MD_resultado}")
+
+
+def MD_calcular_media(MD_lista):
+    """
+    Calcula la media (promedio) de los elementos de una lista
+    y muestra el resultado por pantalla.
+    """
+    if len(MD_lista) == 0:
+        print("La lista está vacía.")
+        return
+    MD_media = sum(MD_lista) / len(MD_lista)
+    print(f"La media de la lista es: {MD_media}")
+
+import math
+
+def MD_invertir_cadena(MD_cadena):
+    """
+    Recibe una cadena y devuelve la cadena invertida.
+    Ejemplo: "hola" -> "aloh"
+    """
+    return MD_cadena[::-1]
+
+def MD_mayor_de_tres_numeros(MD_num1, MD_num2, MD_num3):
+    """
+    Recibe tres números y devuelve el mayor de ellos.
+    """
+    return max(MD_num1, MD_num2, MD_num3)
+
+def MD_calcular_area(MD_radio, MD_altura):
+    """
+    Calcula el área de un cilindro usando la fórmula:
+    Área = 2 * π * r * h + 2 * π * r²
+    Devuelve el resultado.
+    """
+    MD_area = 2 * math.pi * MD_radio * MD_altura + 2 * math.pi * MD_radio**2
+    return MD_area
+
+def MD_buscar_palabra(MD_cadena, MD_palabra):
+    """
+    Devuelve True si la palabra está dentro de la cadena, False si no.
+    La búsqueda no distingue mayúsculas o minúsculas.
+    """
+    return MD_palabra.lower() in MD_cadena.lower()
+
+def MD_promedio(*MD_numeros):
+    """
+    Calcula el promedio de un número variable de argumentos.
+    Ejemplo: MD_promedio(2, 4, 6) -> 4.0
+    """
+    if len(MD_numeros) == 0:
+        return 0
+    return sum(MD_numeros) / len(MD_numeros)
+
+def MD_multiplicar_lista(MD_lista, MD_numero):
+    """
+    Multiplica cada elemento de una lista por un número
+    y devuelve una nueva lista con los resultados.
+    """
+    return [x * MD_numero for x in MD_lista]
+
+def MD_mayor_de_varios_numeros(*MD_numeros):
+    """
+    Devuelve el número mayor entre varios números ingresados.
+    Si no se pasa ningún número, devuelve None.
+    """
+    if len(MD_numeros) == 0:
+        return None
+    return max(MD_numeros)
+
+def MD_calcular_mediana(*MD_numeros):
+    """
+    Calcula la mediana de un conjunto de números.
+    Si hay un número par de elementos, devuelve el promedio de los dos centrales.
+    """
+    if not MD_numeros:
+        return None
+    MD_lista = sorted(MD_numeros)
+    MD_n = len(MD_lista)
+    if MD_n % 2 == 1:
+        return MD_lista[MD_n // 2]
+    else:
+        return (MD_lista[MD_n // 2 - 1] + MD_lista[MD_n // 2]) / 2
+
+def MD_contar_ocurrencias(MD_cadena, MD_palabra):
+    """
+    Devuelve el número de veces que una palabra aparece dentro de una cadena.
+    No distingue entre mayúsculas o minúsculas.
+    """
+    return MD_cadena.lower().count(MD_palabra.lower())
