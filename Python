@@ -23,7 +23,7 @@ def MD_num_aleatorio():
         elif MD_intento > MD_numero_secreto:
             print("El número secreto es menor.")
         else:
-            print("🎉 ¡Felicitaciones, adivinaste el número!")
+            print("¡Felicitaciones, adivinaste el número!")
             break
 
 def MD_contador_vocales():
