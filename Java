@@ -34,7 +34,7 @@ public class Nivel1 {
             } else if (intento > secreto) {
                 System.out.println("El número es menor.");
             } else {
-                System.out.println("🎉 ¡Felicitaciones, adivinaste el número!");
+                System.out.println("¡Felicitaciones, adivinaste el número!");
             }
         } while (intento != secreto);
     }
