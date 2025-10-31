@@ -1,0 +1,267 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class Nivel1 {
+    public static void MD_edad() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingresa tu edad: ");
+        int edad = sc.nextInt();
+        System.out.println("Tu edad es: " + edad + " años");
+    }
+
+    public static void MD_suma() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingresa el primer número: ");
+        double num1 = sc.nextDouble();
+        System.out.print("Ingresa el segundo número: ");
+        double num2 = sc.nextDouble();
+        System.out.println("La suma es: " + (num1 + num2));
+    }
+
+    public static void MD_num_aleatorio() {
+        Scanner sc = new Scanner(System.in);
+        Random rand = new Random();
+        int secreto = rand.nextInt(100) + 1;
+        int intento;
+
+        System.out.println("Adivina el número (entre 1 y 100):");
+        do {
+            System.out.print("Tu intento: ");
+            intento = sc.nextInt();
+
+            if (intento < secreto) {
+                System.out.println("El número es mayor.");
+            } else if (intento > secreto) {
+                System.out.println("El número es menor.");
+            } else {
+                System.out.println("🎉 ¡Felicitaciones, adivinaste el número!");
+            }
+        } while (intento != secreto);
+    }
+
+    public static void MD_contador_vocales() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingresa una cadena: ");
+        String texto = sc.nextLine().toLowerCase();
+        int contador = 0;
+        String vocales = "aeiou";
+
+        for (char c : texto.toCharArray()) {
+            if (vocales.indexOf(c) != -1) {
+                contador++;
+            }
+        }
+
+        System.out.println("La cadena tiene " + contador + " vocales.");
+    }
+
+    public static void main(String[] args) {
+        // Descomenta el que quieras probar:
+        // MD_edad();
+        // MD_suma();
+        // MD_num_aleatorio();
+        // MD_contador_vocales();
+    }
+}
+
+public class Nive2 {
+
+        /*
+         * Verifica si una palabra es palíndromo.
+         * Un palíndromo se lee igual al derecho y al revés.
+         */
+        palabra = palabra.toLowerCase().replace(" ", "");
+        String invertida = new StringBuilder(palabra).reverse().toString();
+
+        if (palabra.equals(invertida)) {
+            System.out.println(true);
+        } else {
+            System.out.println(false);
+        }
+    }
+
+   
+    public static void MD_calcular_potencia(double base, double exponente) {
+        /*
+         * Calcula la potencia de una base elevada a un exponente
+         * y muestra el resultado en pantalla.
+         */
+        double resultado = Math.pow(base, exponente);
+        System.out.println(base + " elevado a la " + exponente + " es " + resultado);
+    }
+
+
+    public static void MD_calcular_media(double[] lista) {
+        /*
+         * Calcula la media (promedio) de los elementos de un arreglo.
+         */
+        if (lista.length == 0) {
+            System.out.println("La lista está vacía.");
+            return;
+        }
+
+        double suma = 0;
+        for (double num : lista) {
+            suma += num;
+        }
+
+        double media = suma / lista.length;
+        System.out.println("La media de la lista es: " + media);
+    }
+
+    public static void main(String[] args) {
+        // Descomenta el que quieras probar:
+
+        // MD_palindromo("Reconocer");
+        // MD_palindromo("Hola");
+
+        // MD_calcular_potencia(2, 5);
+
+        // double[] numeros = {4, 8, 6, 2, 10};
+        // MD_calcular_media(numeros);
+    }
+}
+
+public class Nivel3 {
+
+    public static String MD_invertir_cadena(String cadena) {
+        /*
+         * Recibe una cadena y devuelve la cadena invertida.
+         * Ejemplo: "hola" -> "aloh"
+         */
+        return new StringBuilder(cadena).reverse().toString();
+    }
+
+    public static double MD_mayor_de_tres_numeros(double num1, double num2, double num3) {
+        /*
+         * Devuelve el número mayor entre tres valores.
+         */
+        return Math.max(num1, Math.max(num2, num3));
+    }
+
+    public static double MD_calcular_area(double radio, double altura) {
+        /*
+         * Calcula el área de un cilindro:
+         * Área = 2 * π * r * h + 2 * π * r²
+         */
+        return 2 * Math.PI * radio * altura + 2 * Math.PI * Math.pow(radio, 2);
+    }
+
+    public static boolean MD_buscar_palabra(String cadena, String palabra) {
+        /*
+         * Devuelve true si la palabra está dentro de la cadena.
+         * No distingue entre mayúsculas y minúsculas.
+         */
+        return cadena.toLowerCase().contains(palabra.toLowerCase());
+    }
+
+    public static void main(String[] args) {
+
+        // Pruebas de cada función:
+
+        System.out.println("Cadena invertida: " + MD_invertir_cadena("Programación"));
+
+        System.out.println("Mayor de tres: " + MD_mayor_de_tres_numeros(8, 15, 12));
+
+        System.out.println("Área del cilindro: " + MD_calcular_area(3, 10));
+
+        System.out.println("Buscar palabra: " + MD_buscar_palabra("El perro corre rápido", "perro"));
+        System.out.println("Buscar palabra: " + MD_buscar_palabra("El perro corre rápido", "gato"));
+    }
+}
+
+import java.util.Arrays;
+
+public class Nive4 {
+
+    public static double MD_promedio(double... numeros) {
+        /*
+         * Calcula el promedio de un número variable de parámetros.
+         */
+        if (numeros.length == 0) return 0;
+
+        double suma = 0;
+        for (double n : numeros) {
+            suma += n;
+        }
+        return suma / numeros.length;
+    }
+
+    public static double[] MD_multiplicar_lista(double[] lista, double numero) {
+        /*
+         * Multiplica cada elemento de la lista por un número
+         * y devuelve una nueva lista con los resultados.
+         */
+        double[] resultado = new double[lista.length];
+        for (int i = 0; i < lista.length; i++) {
+            resultado[i] = lista[i] * numero;
+        }
+        return resultado;
+    }
+
+    public static double MD_mayor_de_varios_numeros(double... numeros) {
+        /*
+         * Devuelve el número mayor entre varios números ingresados.
+         */
+        if (numeros.length == 0) return Double.NaN;
+
+        double mayor = numeros[0];
+        for (double n : numeros) {
+            if (n > mayor) {
+                mayor = n;
+            }
+        }
+        return mayor;
+    }
+
+    public static double MD_calcular_mediana(double... numeros) {
+        /*
+         * Calcula la mediana de un conjunto de números.
+         * Si hay una cantidad par, devuelve el promedio de los dos del medio.
+         */
+        if (numeros.length == 0) return Double.NaN;
+
+        double[] ordenados = numeros.clone();
+        Arrays.sort(ordenados);
+        int n = ordenados.length;
+
+        if (n % 2 == 1) {
+            return ordenados[n / 2];
+        } else {
+            return (ordenados[n / 2 - 1] + ordenados[n / 2]) / 2.0;
+        }
+    }
+
+    public static int MD_contar_ocurrencias(String cadena, String palabra) {
+        /*
+         * Devuelve cuántas veces aparece una palabra dentro de una cadena.
+         * No distingue entre mayúsculas y minúsculas.
+         */
+        cadena = cadena.toLowerCase();
+        palabra = palabra.toLowerCase();
+
+        int contador = 0;
+        int indice = cadena.indexOf(palabra);
+
+        while (indice != -1) {
+            contador++;
+            indice = cadena.indexOf(palabra, indice + palabra.length());
+        }
+        return contador;
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println("Promedio: " + MD_promedio(10, 20, 30, 40));
+
+        double[] lista = {1, 2, 3, 4};
+        System.out.println("Multiplicar lista: " + Arrays.toString(MD_multiplicar_lista(lista, 3)));
+
+        System.out.println("Mayor de varios: " + MD_mayor_de_varios_numeros(4, 8, 2, 9, 5));
+
+        System.out.println("Mediana impar: " + MD_calcular_mediana(1, 3, 5, 7, 9));
+        System.out.println("Mediana par: " + MD_calcular_mediana(1, 3, 5, 7));
+
+        System.out.println("Ocurrencias: " + MD_contar_ocurrencias("El perro corre y el perro salta", "perro"));
+    }
+}
