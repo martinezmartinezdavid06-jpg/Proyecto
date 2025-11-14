@@ -1,0 +1,138 @@
+from collections import deque
+
+class MD_Grid:
+    def __init__(self, rows, cols):
+        self.MD_rows = rows
+        self.MD_cols = cols
+        self.MD_cells = [['.' for _ in range(cols)] for __ in range(rows)]
+    def MD_isValid(self, r, c):
+        return 0 <= r < self.MD_rows and 0 <= c < self.MD_cols
+    def MD_placeExplorer(self, r, c):
+        if self.MD_isValid(r,c): self.MD_cells[r][c] = 'E'
+    def MD_placeTreasure(self, r, c):
+        if self.MD_isValid(r,c): self.MD_cells[r][c] = 'T'
+    def MD_markVisited(self, r, c):
+        if self.MD_isValid(r,c) and self.MD_cells[r][c]=='.': self.MD_cells[r][c]='*'
+    def MD_clearCell(self, r, c):
+        if self.MD_isValid(r,c): self.MD_cells[r][c] = '.'
+    def MD_snapshot(self):
+        return '\n'.join(' '.join(row) for row in self.MD_cells) + '\n'
+
+class MD_Explorer:
+    def __init__(self, r, c):
+        self.MD_r = r; self.MD_c = c
+        self.MD_steps = 0
+        self.MD_history = [(r,c)]
+    def MD_moveTo(self, r, c):
+        self.MD_r = r; self.MD_c = c
+        self.MD_steps += 1
+        self.MD_history.append((r,c))
+    def MD_manhattan(self, tr, tc):
+        return abs(self.MD_r - tr) + abs(self.MD_c - tc)
+
+def MD_saveLog(filename, lines):
+    with open(filename, 'w', encoding='utf-8') as f:
+        for l in lines: f.write(l + '\n')
+
+def MD_runGreedy(rows, cols, er, ec, tr, tc):
+    grid = MD_Grid(rows, cols)
+    ex = MD_Explorer(er, ec)
+    visited = [[False]*cols for _ in range(rows)]
+    grid.MD_placeExplorer(er, ec)
+    grid.MD_placeTreasure(tr, tc)
+    log = []
+    log.append('--- Mapa inicial ---')
+    log.append(grid.MD_snapshot())
+    dirs = [(-1,0),(1,0),(0,-1),(0,1)]
+    dirNames = ['UP','DOWN','LEFT','RIGHT']
+    while not (ex.MD_r==tr and ex.MD_c==tc):
+        visited[ex.MD_r][ex.MD_c] = True
+        best_r, best_c = ex.MD_r, ex.MD_c
+        best_dist = ex.MD_manhattan(tr,tc)
+        choice = -1
+        for i,(dr,dc) in enumerate(dirs):
+            nr, nc = ex.MD_r + dr, ex.MD_c + dc
+            if not grid.MD_isValid(nr,nc): continue
+            if visited[nr][nc]: continue
+            dist = abs(nr-tr) + abs(nc-tc)
+            if dist < best_dist:
+                best_dist = dist; best_r, best_c = nr, nc; choice = i
+        if choice == -1:
+            for i,(dr,dc) in enumerate(dirs):
+                nr, nc = ex.MD_r + dr, ex.MD_c + dc
+                if not grid.MD_isValid(nr,nc): continue
+                dist = abs(nr-tr) + abs(nc-tc)
+                if dist < best_dist:
+                    best_dist = dist; best_r, best_c = nr, nc; choice = i
+        if choice == -1:
+            log.append('No se puede avanzar más. Terminando.')
+            break
+        grid.MD_markVisited(ex.MD_r, ex.MD_c)
+        grid.MD_clearCell(ex.MD_r, ex.MD_c)
+        ex.MD_moveTo(best_r, best_c)
+        if ex.MD_r==tr and ex.MD_c==tc:
+            grid.MD_placeTreasure(tr,tc)
+            grid.MD_placeExplorer(ex.MD_r, ex.MD_c)
+        else:
+            grid.MD_placeExplorer(ex.MD_r, ex.MD_c)
+        log.append(f'Paso {ex.MD_steps}: mover {dirNames[choice]} -> ({ex.MD_r},{ex.MD_c})')
+        log.append(grid.MD_snapshot())
+    log.append('--- Resultado ---')
+    if ex.MD_r==tr and ex.MD_c==tc:
+        log.append(f'Tesoro encontrado en ({tr},{tc}) despues de {ex.MD_steps} pasos.')
+    else:
+        log.append(f'Tesoro no encontrado. Pasos dados: {ex.MD_steps}')
+    return log
+
+def MD_runBFS(rows, cols, er, ec, tr, tc):
+    grid = MD_Grid(rows, cols)
+    grid.MD_placeTreasure(tr, tc)
+    log = ['--- Mapa inicial ---', grid.MD_snapshot()]
+    dirs = [(-1,0),(1,0),(0,-1),(0,1)]
+    visited = [[False]*cols for _ in range(rows)]
+    pr = [[None]*cols for _ in range(rows)]
+    q = deque()
+    q.append((er,ec)); visited[er][ec] = True
+    found = False
+    while q:
+        r,c = q.popleft()
+        if r==tr and c==tc: found = True; break
+        for dr,dc in dirs:
+            nr, nc = r+dr, c+dc
+            if not grid.MD_isValid(nr,nc): continue
+            if not visited[nr][nc]: visited[nr][nc] = True; pr[nr][nc] = (r,c); q.append((nr,nc))
+    if not visited[tr][tc]: log.append('No hay camino al tesoro.'); return log
+    path = []
+    cur = (tr,tc)
+    while cur != (er,ec):
+        path.append(cur)
+        cur = pr[cur[0]][cur[1]]
+    path.append((er,ec)); path.reverse()
+    ex = MD_Explorer(er,ec)
+    grid.MD_placeExplorer(er,ec)
+    log.append(f'Ruta encontrada (pasos): {len(path)-1}')
+    log.append(grid.MD_snapshot())
+    for p in path[1:]:
+        grid.MD_markVisited(ex.MD_r, ex.MD_c)
+        grid.MD_clearCell(ex.MD_r, ex.MD_c)
+        ex.MD_moveTo(p[0],p[1])
+        if ex.MD_r==tr and ex.MD_c==tc:
+            grid.MD_placeTreasure(tr,tc); grid.MD_placeExplorer(ex.MD_r,ex.MD_c)
+        else:
+            grid.MD_placeExplorer(ex.MD_r,ex.MD_c)
+        log.append(f'Paso {ex.MD_steps}: -> ({ex.MD_r},{ex.MD_c})')
+        log.append(grid.MD_snapshot())
+    log.append('--- Resultado ---')
+    log.append(f'Tesoro encontrado en ({tr},{tc}) despues de {ex.MD_steps} pasos.')
+    return log
+
+if __name__ == '__main__':
+    rows, cols = 6, 6
+    er, ec = 0, 0
+    tr, tc = 4, 3
+    log1 = MD_runGreedy(rows,cols,er,ec,tr,tc)
+    MD_saveLog('resultado_greedy.txt', log1)
+    print('Greedy terminado. Log guardado en resultado_greedy.txt')
+    log2 = MD_runBFS(rows,cols,er,ec,tr,tc)
+    MD_saveLog('resultado_bfs.txt', log2)
+    print('BFS terminado. Log guardado en resultado_bfs.txt')
